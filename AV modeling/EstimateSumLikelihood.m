@@ -5,7 +5,7 @@
 % the parameters that describe the subject's task performance
 
 function [sumLikelihood] = EstimateSumLikelihood(freeParametersVector,freeParameterNames, responses, visTargetLocations, audTargetLocations,...
-						 fixedParameters, taskTypes, modelType, setNumbers,scaleFactors)
+						 fixedParameters, taskTypes, modelType, setNumbers, scaleFactors)
 	%Combine free parameters and fixed parameters into one struct
 	paramCell = [fieldnames(fixedParameters)' freeParameterNames'; struct2cell(fixedParameters)' num2cell(freeParametersVector.*scaleFactors)'];
 	%Useful note for manual scripting, don't actually uncomment this:

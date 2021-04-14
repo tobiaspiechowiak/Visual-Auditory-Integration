@@ -25,7 +25,8 @@ for(subjectID = subjectList)
 	sessionList = {'Session1', 'Session2', 'Session3'};
 	for(sessionNumber = sessionList)
 		%Because half of the subjects completed the tasks in the opposite order, this conditional
-		%needs to be flipped for subjects that performed the audloc task in session 2.
+		%needs to be flipped for subjects that performed the au
+        dloc task in session 2.
 		if( strcmp(cell2str(sessionNumber),'Session2') == 1)
 		%if( strcmp(cell2str(sessionNumber),'Session1') == 1 || strcmp(cell2str(sessionNumber),'Session3') == 1)
 			%modelType can be 'Averaging', 'Selection', or 'Matching', based on the three
@@ -88,10 +89,10 @@ fixedParameters.muP = 0;					%prior expectation for the mean of the target distr
 fixedParameters.SDP = 40;					%Prior expectation for target distribution around straight ahead
 %fixedParameters.pcommon = 0.1;					%prior expectation of a common cause for auditory and visual signals
 fixedParameters.inattentionProbability = 0.01;			%Probability that the subject didn't see the target and will respond based on prior alone
+
 %oddsRatio is ONLY fit in forced choice selection model
 %TODO: oddsRatio should be implemented in the manner suggested by Knill
 fixedParameters.oddsRatio = 0.5;				%odds ratio required for forced choice selection model to say 'same location'
-
 
 %fitParameterArray = struct('SDP',0,'pcommon',0);
 %fval = zeros(1,numberOfIterations);

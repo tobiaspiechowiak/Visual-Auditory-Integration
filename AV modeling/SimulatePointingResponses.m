@@ -2,7 +2,6 @@
 % Started 8/21/13 by Adam Bosen
 %
 % Produce a pointing response based on the selected model type
-
 function [simulatedPointingResponses] = SimulatePointingResponses(modelParameters,visTargetLocation, audTargetLocation, modelType, numberOfResponses)
 	%Calculate the uncertainty at these target locations
 	SDV = (modelParameters.SDV + modelParameters.SDVGain * abs(visTargetLocation));
