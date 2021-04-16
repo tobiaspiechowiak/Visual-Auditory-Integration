@@ -1,7 +1,4 @@
-function [Averaging, Selection, Matching] = SimulateResponses(AVmodel, uniqueAVPos, nrOfResponses)
-% Simulate dataset based on model parameters, stimuli positions and a
-% decision making strategy (i.e. Wozny et al., averaging, model selection)
-% and probability matching 
+function [spatialwindow] = CalculateIntegrationWindow(AVmodel,uniqueAVPos, nrOfResponses)
 audioPos = uniqueAVPos(:,1); 
 visualPos = uniqueAVPos(:,2); 
 
@@ -49,29 +46,22 @@ p_percept_seperate = 1./(2.*pi.*sqrt(...
 %% calculate the probability of a common source p(C == 1, Xv, Xa) 
 p_common = p_percept_common .* prior_common./((p_percept_common .* prior_common + p_percept_seperate).*(1-prior_common)); 
 
-%% now calculate the auditory percept for a common and separate source
-A_percept_common = (A_percept./A_std.^2 + V_percept./V_std.^2 + prior_mu./prior_mu_std.^2)./ ...
-    (1./A_std.^2 + 1./V_std.^2 + 1./prior_mu_std.^2);
+avg_p_common = mean(p_common,1); 
+%% calculate av distance 
+x = uniqueAVPos(:,1)-uniqueAVPos(:,2); 
 
-A_percept_seperate = (A_percept./A_std.^2 + prior_mu./prior_mu_std.^2)./ ...
-    (1./A_std.^2 + 1./prior_mu_std.^2);
+[uniqueRows,~,pairID] = unique(x, 'stable'); 
+range = nan(max(accumarray(pairID, 1)),size(uniqueRows,1)); 
 
-%% now (finally) model the responses based on the decision making criteria 
-% random probabilities for probability matching 
-prob_match = rand(nrOfResponses,size(p_common,2)); 
+for i = 1:max(pairID)
+    temp = avg_p_common(pairID == i);
+    range(1:length(temp),i) = temp; 
+end 
 
-% responses per model
-Averaging = A_percept_common .* p_common + A_percept_seperate .* (1 - p_common);  
-Selection = A_percept_common .* (p_common > 0.5) + A_percept_seperate .* (p_common <= 0.5);  % either first term or second term is 0 
-Matching = A_percept_common .* (p_common > prob_match) + A_percept_seperate .* (p_common <= prob_match);  % either first term or second term is 0   
-
-%% add some inattention trials, although instead of based on prior only, it
-% could also be a visual response... 
-lapseTrials = rand(size(Averaging,1),size(Averaging,2));
-guess = randn(size(Averaging,1),size(Averaging,2)) * prior_mu_std + prior_mu;
-
-Averaging(lapseTrials < AVmodel.parameters.inattentionProbability.value) = guess(lapseTrials < AVmodel.parameters.inattentionProbability.value);
-Selection(lapseTrials < AVmodel.parameters.inattentionProbability.value) = guess(lapseTrials < AVmodel.parameters.inattentionProbability.value);
-Matching(lapseTrials < AVmodel.parameters.inattentionProbability.value) = guess(lapseTrials < AVmodel.parameters.inattentionProbability.value);
-end
-
+avg_range = nanmean(range,1); 
+spatialwindow = max(x(avg_range >= 0.5)) - min(x(avg_range >= 0.5));   
+if isempty(spatialwindow)
+    spatialwindow = 0; 
+end 
+    
+end 
