@@ -44,7 +44,7 @@ p_percept_seperate = 1./(2.*pi.*sqrt(...
     (V_std.^2 + prior_mu_std.^2)));  
 
 %% calculate the probability of a common source p(C == 1, Xv, Xa) 
-p_common = p_percept_common .* prior_common./((p_percept_common .* prior_common + p_percept_seperate).*(1-prior_common)); 
+p_common = p_percept_common .* prior_common./(p_percept_common .* prior_common + p_percept_seperate.*(1-prior_common)); 
 
 avg_p_common = mean(p_common,1); 
 %% calculate av distance 

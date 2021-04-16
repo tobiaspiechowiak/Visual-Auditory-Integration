@@ -47,7 +47,7 @@ p_percept_seperate = 1./(2.*pi.*sqrt(...
     (V_std.^2 + prior_mu_std.^2)));  
 
 %% calculate the probability of a common source p(C == 1, Xv, Xa) 
-p_common = p_percept_common .* prior_common./((p_percept_common .* prior_common + p_percept_seperate).*(1-prior_common)); 
+p_common = p_percept_common .* prior_common./(p_percept_common .* prior_common + p_percept_seperate.*(1-prior_common)); 
 
 %% now calculate the auditory percept for a common and separate source
 A_percept_common = (A_percept./A_std.^2 + V_percept./V_std.^2 + prior_mu./prior_mu_std.^2)./ ...
