@@ -3,15 +3,15 @@ audioPos = uniqueAVPos(:,1);
 visualPos = uniqueAVPos(:,2); 
 
 % increase readability a little 
-prior_mu = AVmodel.parameters.prior_mu.value;
+prior_mu = AVmodel.parameters.prior_mu.value;A
 prior_mu_std = AVmodel.parameters.prior_mu_std.value; 
 prior_common = AVmodel.parameters.prior_common.value; 
 
-%% calculate sigma_aud & sigma_vis per location
+%% calculate sigma_aud & sigma_vis per location  equ. after 3 +4 
 A_std = AVmodel.parameters.A_std_offset.value + AVmodel.parameters.A_std_slope.value*abs(audioPos)'; 
 V_std = AVmodel.parameters.V_std_offset.value + AVmodel.parameters.V_std_slope.value*abs(visualPos)'; 
 
-%% simulate nrOfResponses unimodal percepts for each location, using a
+%% simulate nrOfResponses unimodal percepts for each location, using a  (How to sample from gaussian distribution?)
 % linear gain based on location with a bias/offset at zero.
 % the variance of the distribution from which we sample varies with
 % location (see above) 
